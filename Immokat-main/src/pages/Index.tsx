@@ -9,9 +9,9 @@ import WhyUsSection from "@/components/WhyUsSection";
 import CTASection from "@/components/CTASection";
 import { Link } from "react-router-dom";
 import { ArrowRight, Home, MapPin, Building, Loader2 } from "lucide-react";
-import imgMaison from "@/assets/Maison.jpg";
-import imgTerrain from "@/assets/Terrain.jpg";
-import imgAppart from "@/assets/Appartement.jpg";
+import maisonImg from "@/assets/Maison.jpg";
+import terrainImg from "@/assets/Terrain.jpg";
+import appartementImg from "@/assets/Appartement.jpg";
 import imgSvcVente from "@/assets/vente immobilier.jpg";
 import imgSvcLocation from "@/assets/location immobilière.jpg";
 import imgSvcGestion from "@/assets/gestion locative.jpg";
@@ -32,19 +32,19 @@ const categories = [
     icon: Home,
     label: "Maisons",
     type: "maison",
-    image: imgMaison,
+    image: maisonImg,
   },
   {
     icon: MapPin,
     label: "Terrains",
     type: "terrain",
-    image: imgTerrain,
+    image: terrainImg,
   },
   {
     icon: Building,
     label: "Appartements",
     type: "appartement",
-    image: imgAppart,
+    image: appartementImg,
   },
 ];
 
@@ -80,7 +80,7 @@ export default function Index() {
           Explorez par catégorie
         </h2>
         <div
-          className="mt-8 flex gap-4 overflow-x-auto sm:grid sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 scrollbar-hide"
+          className="mt-8 flex gap-3 overflow-x-auto sm:grid sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 scrollbar-hide"
         >
           {counts.map(({ icon: Icon, label, type, count, image }, i) => (
             <motion.div
@@ -89,11 +89,11 @@ export default function Index() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="min-w-[220px] max-w-[80vw] sm:min-w-0 sm:max-w-none"
+              className="min-w-[140px] max-w-[60vw] sm:min-w-0 sm:max-w-none"
             >
               <Link
                 to={`/annonces?propertyType=${type}`}
-                className="group relative flex h-36 w-[220px] sm:h-52 sm:w-auto overflow-hidden rounded-2xl shadow-md transition-all hover:shadow-[var(--shadow-primary)] hover:scale-[1.02]"
+                className="group relative flex h-24 w-[140px] sm:h-44 sm:w-auto overflow-hidden rounded-2xl shadow-md transition-all hover:shadow-[var(--shadow-primary)] hover:scale-[1.02]"
               >
                 {/* Image de fond */}
                 <img
@@ -104,17 +104,17 @@ export default function Index() {
                 {/* Overlay dégradé */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                 {/* Contenu */}
-                <div className="relative flex w-full flex-col justify-end p-3 sm:p-5">
+                <div className="relative flex w-full flex-col justify-end p-2 sm:p-5">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="mb-2 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
-                        <Icon size={16} className="text-white sm:size-[18px]" />
+                      <div className="mb-2 flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
+                        <Icon size={14} className="text-white sm:size-[18px]" />
                       </div>
-                      <h3 className="font-display text-base sm:text-lg font-bold text-white">{label}</h3>
-                      <p className="text-xs text-white/80">{count} annonce{count !== 1 ? "s" : ""}</p>
+                      <h3 className="font-display text-xs sm:text-lg font-bold text-white">{label}</h3>
+                      <p className="text-[10px] text-white/80">{count} annonce{count !== 1 ? "s" : ""}</p>
                     </div>
-                    <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform group-hover:translate-x-1">
-                      <ArrowRight size={12} className="text-white sm:size-[14px]" />
+                    <div className="flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform group-hover:translate-x-1">
+                      <ArrowRight size={10} className="text-white sm:size-[14px]" />
                     </div>
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export default function Index() {
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 grid-cols-2 lg:grid-cols-3">
             {enVente.slice(0, 6).map((listing, i) => (
               <ListingCard key={listing.id} listing={listing} index={i} />
             ))}
