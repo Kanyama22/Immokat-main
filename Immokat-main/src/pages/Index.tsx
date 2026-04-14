@@ -9,9 +9,6 @@ import WhyUsSection from "@/components/WhyUsSection";
 import CTASection from "@/components/CTASection";
 import { Link } from "react-router-dom";
 import { ArrowRight, Home, MapPin, Building, Loader2 } from "lucide-react";
-import maisonImg from "@/assets/Maison.jpg";
-import terrainImg from "@/assets/Terrain.jpg";
-import appartementImg from "@/assets/Appartement.jpg";
 import imgSvcVente from "@/assets/vente immobilier.jpg";
 import imgSvcLocation from "@/assets/location immobilière.jpg";
 import imgSvcGestion from "@/assets/gestion locative.jpg";
@@ -32,19 +29,19 @@ const categories = [
     icon: Home,
     label: "Maisons",
     type: "maison",
-    image: maisonImg,
+    image: "/Maison.jpg",
   },
   {
     icon: MapPin,
     label: "Terrains",
     type: "terrain",
-    image: terrainImg,
+    image: "/Terrain.jpg",
   },
   {
     icon: Building,
     label: "Appartements",
     type: "appartement",
-    image: appartementImg,
+    image: "/Appartement.jpg",
   },
 ];
 
