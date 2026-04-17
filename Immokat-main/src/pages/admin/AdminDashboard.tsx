@@ -130,6 +130,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => setSidebarOpen(false)}
           className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground hover:bg-secondary lg:hidden"
+          title="Fermer le menu"
         >
           <X className="h-4 w-4" />
         </button>
@@ -143,6 +144,7 @@ export default function AdminDashboard() {
           <button
             onClick={() => setSidebarOpen(true)}
             className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary"
+            title="Ouvrir le menu"
           >
             <Menu className="h-5 w-5" />
           </button>

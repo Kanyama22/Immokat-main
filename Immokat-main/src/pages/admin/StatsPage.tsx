@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { omsupabase as supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home, MapPin, TrendingUp, Users, Building, LandPlot, Star, DollarSign } from "lucide-react";
 
@@ -48,14 +48,9 @@ export default function StatsPage() {
     { label: "Villas", value: villaCount, icon: Star, total: totalListings },
   ];
 
+
   return (
     <div>
-      {/* Header */}
-      <div>
-        <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">Tableau de bord</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Vue d'ensemble de vos annonces</p>
-      </div>
-
       {/* Stats principales */}
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {mainStats.map(({ label, value, icon: Icon, bg, color }) => (
@@ -75,7 +70,7 @@ export default function StatsPage() {
                   <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${color.replace("text-", "bg-")}`}
-                      style={{ width: `${Math.round((value / totalListings) * 100)}%` }}
+                      style={{ '--bar-width': `${Math.round((value / totalListings) * 100)}%` } as React.CSSProperties}
                     />
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">

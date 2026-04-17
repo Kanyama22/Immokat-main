@@ -63,6 +63,7 @@ const ListingCard = forwardRef<HTMLDivElement, Props>(({ listing, index = 0 }, r
             onClick={(e) => {
               e.preventDefault();
             }}
+            title="Ajouter aux favoris"
           >
             <Heart size={16} className="text-white" />
           </button>

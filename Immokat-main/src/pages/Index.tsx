@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { omsupabase as supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
@@ -9,6 +9,28 @@ import WhyUsSection from "@/components/WhyUsSection";
 import CTASection from "@/components/CTASection";
 import { Link } from "react-router-dom";
 import { ArrowRight, Home, MapPin, Building, Loader2 } from "lucide-react";
+// ...autres imports...
+
+const categories = [
+  {
+    icon: Home,
+    label: "Maisons",
+    type: "maison",
+    image: undefined,
+  },
+  {
+    icon: MapPin,
+    label: "Terrains",
+    type: "terrain",
+    image: undefined,
+  },
+  {
+    icon: Building,
+    label: "Appartements",
+    type: "appartement",
+    image: undefined,
+  },
+];
 import imgSvcVente from "@/assets/vente immobilier.jpg";
 import imgSvcLocation from "@/assets/location immobilière.jpg";
 import imgSvcGestion from "@/assets/gestion locative.jpg";
@@ -24,26 +46,6 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
-const categories = [
-  {
-    icon: Home,
-    label: "Maisons",
-    type: "maison",
-    image: "/Maison.jpg",
-  },
-  {
-    icon: MapPin,
-    label: "Terrains",
-    type: "terrain",
-    image: "/Terrain.jpg",
-  },
-  {
-    icon: Building,
-    label: "Appartements",
-    type: "appartement",
-    image: "/Appartement.jpg",
-  },
-];
 
 export default function Index() {
   const { data: listings = [], isLoading } = useQuery({

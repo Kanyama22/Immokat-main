@@ -1,3 +1,27 @@
+.bar-width-0 { width: 0%; }
+.bar-width-5 { width: 5%; }
+.bar-width-10 { width: 10%; }
+.bar-width-15 { width: 15%; }
+.bar-width-20 { width: 20%; }
+.bar-width-25 { width: 25%; }
+.bar-width-30 { width: 30%; }
+.bar-width-35 { width: 35%; }
+.bar-width-40 { width: 40%; }
+.bar-width-45 { width: 45%; }
+.bar-width-50 { width: 50%; }
+.bar-width-55 { width: 55%; }
+.bar-width-60 { width: 60%; }
+.bar-width-65 { width: 65%; }
+.bar-width-70 { width: 70%; }
+.bar-width-75 { width: 75%; }
+.bar-width-80 { width: 80%; }
+.bar-width-85 { width: 85%; }
+.bar-width-90 { width: 90%; }
+.bar-width-95 { width: 95%; }
+.bar-width-100 { width: 100%; }
+.h-full[style] {
+  width: var(--bar-width, 100%);
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -38,5 +62,13 @@
 }
 
 .read-the-docs {
+
+/* Utilitaires pour animation-delay */
+.delay-1000 {
+  animation-delay: 1s;
+}
+.delay-2000 {
+  animation-delay: 2s;
+}
   color: #888;
 }
