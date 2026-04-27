@@ -1,4 +1,6 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.98.0";
+declare const process: any;
+// import { createClient } from "https://esm.sh/@supabase/supabase-js@2.98.0";
+import { createClient } from "@supabase/supabase-js";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -78,23 +80,31 @@ END
 $$;
 `;
 
-Deno.serve(async (req) => {
+// Remplacement de Deno.serve par une fonction exportée compatible Node.js
+// Types génériques pour req/res Node.js
+// @ts-expect-error: Node.js type import for API handler
+import { IncomingMessage, ServerResponse } from 'http';
+// Forcer l'import de process pour Node.js
+
+import postgres from 'postgres';
+export default async function handler(req: IncomingMessage & { method?: string; headers: Record<string, string | string[] | undefined>; }, res: ServerResponse) {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    res.writeHead(204, corsHeaders);
+    res.end();
+    return;
   }
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const anonKey = process.env.SUPABASE_ANON_KEY;
 
     // Verify caller is an authenticated admin
-    const authHeader = req.headers.get("Authorization");
+    const authHeader = req.headers["authorization"];
     if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Non autorisé" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      res.writeHead(401, { ...corsHeaders, "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Non autorisé" }));
+      return;
     }
 
     const userClient = createClient(supabaseUrl, anonKey, {
@@ -103,10 +113,9 @@ Deno.serve(async (req) => {
 
     const { data: { user }, error: userError } = await userClient.auth.getUser();
     if (userError || !user) {
-      return new Response(JSON.stringify({ error: "Non autorisé" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      res.writeHead(401, { ...corsHeaders, "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Non autorisé" }));
+      return;
     }
 
     // Use service-role client to bypass RLS for the admin check here
@@ -119,24 +128,26 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (!roleRow) {
-      return new Response(JSON.stringify({ error: "Accès refusé : rôle admin requis" }), {
-        status: 403,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      res.writeHead(403, { ...corsHeaders, "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Accès refusé : rôle admin requis" }));
+      return;
     }
 
     // Try direct postgres first, fall back to exec_sql RPC
-    const dbUrl = Deno.env.get("SUPABASE_DB_URL");
+    const dbUrl = process.env.SUPABASE_DB_URL;
     if (dbUrl) {
       try {
-        const { default: postgres } = await import("https://deno.land/x/postgresjs@v3.4.4/mod.js");
-        const sql = postgres(dbUrl, { ssl: "require", max: 1 });
+        const sql = postgres(dbUrl, { ssl: { rejectUnauthorized: false }, max: 1 });
         await sql.unsafe(SETUP_SQL);
         await sql.end();
       } catch (pgErr) {
-        console.warn("postgres.js failed, trying exec_sql RPC:", (pgErr as Error).message);
+        if (pgErr && typeof pgErr === 'object' && 'message' in pgErr) {
+          console.warn("postgres.js failed, trying exec_sql RPC:", (pgErr as Error).message);
+        } else {
+          console.warn("postgres.js failed, trying exec_sql RPC:", pgErr);
+        }
         // Fallback: exec_sql RPC (must exist in the project)
-        const { error: rpcErr } = await serviceClient.rpc("exec_sql" as never, { query: SETUP_SQL });
+        const { error: rpcErr } = await serviceClient.rpc("exec_sql", { query: SETUP_SQL });
         if (rpcErr) throw new Error("exec_sql: " + rpcErr.message);
       }
     } else {
@@ -156,4 +167,4 @@ Deno.serve(async (req) => {
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
-});
+}

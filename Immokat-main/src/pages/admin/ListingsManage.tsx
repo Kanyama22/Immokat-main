@@ -95,9 +95,13 @@ export default function ListingsManage() {
                     <button
                       onClick={() => toggleFeatured.mutate({ id: l.id, featured: !!l.featured })}
                       className="transition-colors"
+                      title={l.featured ? "Retirer des favoris" : "Mettre en avant"}
+                      aria-label={l.featured ? "Retirer des favoris" : "Mettre en avant"}
                     >
                       <Star
                         className={`h-4 w-4 ${l.featured ? "fill-primary text-primary" : "text-muted-foreground"}`}
+                        title={l.featured ? "Retirer des favoris" : "Mettre en avant"}
+                        aria-label={l.featured ? "Retirer des favoris" : "Mettre en avant"}
                       />
                     </button>
                   </TableCell>
@@ -105,7 +109,7 @@ export default function ListingsManage() {
                     <div className="flex justify-end gap-2">
                       <Button size="sm" variant="ghost" asChild>
                         <Link to={`/admin/listings/${l.id}/edit`}>
-                          <Edit className="h-4 w-4" />
+                          <Edit className="h-4 w-4" title="Modifier" aria-label="Modifier" />
                         </Link>
                       </Button>
                       <Button
@@ -118,7 +122,7 @@ export default function ListingsManage() {
                           }
                         }}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" title="Supprimer" aria-label="Supprimer" />
                       </Button>
                     </div>
                   </TableCell>
